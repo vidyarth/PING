@@ -1,0 +1,52 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 5fr;
+    }
+</style>
+
+<div class="home-container">
+    <div>
+        <h3 style="text-align: center;">Browse topics</h3>
+        <hr>
+        <div style="text-align: center;">
+            <h4><a href="{% url 'home'%}">All</a></h4>
+            {% for i in topic %}
+                <h4><a href="{% url 'home'%}?q={{i.name}}">{{i.name}}</a></h4>
+            {% endfor %}
+        </div>
+    </div>
+    <div style="margin-left: 3%;">
+        <div class="card" style="width: 40rem;">
+            <div class="card-header">
+                {{room_count}} rooms available
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for i in room %}
+                <li class="list-group-item">
+                    <div style="margin-left: 3%;">
+                        <span>@{{i.host.username}}</span>
+                        <h3>{{i.id}} -- <a href="{% url 'room' pk=i.id %}">{{i.name}}</a>
+                            {% if request.user == i.host %}
+                            &nbsp;<small><a href="{% url 'update-room' pk=i.id %}">(edit)</a></small>
+                            <small><a href="{% url 'delete-room' pk=i.id %}">(Delete)</a></small>
+                        </h3>
+                        {% endif %}
+                        <small>{{i.topic}}</small>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a href="{% url 'create-room' %}">Create Room</a>
+    </div>
+    </div>
+            
+
+
+
+{% endblock %}
